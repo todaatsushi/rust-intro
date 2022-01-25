@@ -1,17 +1,11 @@
 mod data;
+mod functions;
 mod greeting;
 
 fn main() {
     greeting::converse();
 
-    tuples::about_tuples();
-    data::show_simple_data();
-}
+    data::data_demo();
 
-mod tuples {
-    pub fn about_tuples() {
-        println!("\nTuples now...\n");
-        let tuple_example: (u32, u32) = (1, 2); // have to be the same type
-        println!("Tuples look like {:?}.", tuple_example); // :? to print
-    }
+    functions::about_funcs();
 }
