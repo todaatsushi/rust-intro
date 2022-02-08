@@ -1,7 +1,6 @@
 mod model {
-    pub trait Displayable {
-        fn display(&self) -> String;
-    }
+
+    use std::fmt::Display;
 
     enum Fruit {
         Apple,
@@ -9,21 +8,28 @@ mod model {
         Kiwi,
     }
 
-    impl Displayable for Fruit {
-        fn display(&self) -> String {
+    impl Display for Fruit {
+        // fn display(&self) -> String {
+        //     match self {
+        //         Fruit::Apple => "an apple".to_owned(),
+        //         Fruit::Banana => "a banana".to_owned(),
+        //         Fruit::Kiwi => "a kiwi".to_owned(),
+        //     }
+        // }
+        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
             match self {
-                Fruit::Apple => "an apple".to_owned(),
-                Fruit::Banana => "a banana".to_owned(),
-                Fruit::Kiwi => "a kiwi".to_owned(),
+                Fruit::Apple => f.write_str("an apple"),
+                Fruit::Banana => f.write_str("a banana"),
+                Fruit::Kiwi => f.write_str("a kiwi"),
             }
         }
     }
 
     // impl<T: Displayable> Option<T> {
-    pub fn show_item<T: Displayable>(item: &Option<T>, which: &str) {
+    pub fn show_item<T: Display>(item: &Option<T>, which: &str) {
         match item {
             Some(what) => {
-                println!("{} hand is holding {}", which, what.display())
+                println!("{} hand is holding {}", which, what)
             }
             _ => {
                 println!("{} hand is not holding anything", which)
