@@ -20,7 +20,7 @@ mod model {
     }
 
     impl Hands {
-        pub fn show_hands(hands: &Hands) {
+        pub fn show_hands(hands: &Self) {
             // We can borrow hands instead preventing the moving of the var
             if hands.left.present {
                 println!("Left hand is holding: {}", hands.left.what);
@@ -30,7 +30,7 @@ mod model {
 
             Item::show_item(&hands.right, "Right") // nested borrow here works
         }
-        pub fn juggle(mut hands: Hands) -> Hands {
+        pub fn juggle(mut hands: Self) -> Self {
             println!("Let's juggle");
 
             let air: Item = hands.left;
@@ -39,7 +39,7 @@ mod model {
             hands
         }
 
-        pub fn new() -> Hands {
+        pub fn new() -> Self {
             Hands {
                 left: Item {
                     // what: "an apple", doesn't work as "an apple" is borrowed
