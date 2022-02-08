@@ -1,6 +1,6 @@
 mod model {
-    pub enum Item {
-        Something(Fruit),
+    pub enum Item<T> {
+        Something(T),
         Nothing,
     }
 
@@ -11,10 +11,10 @@ mod model {
 
     impl Fruit {
         fn display(&self) -> String {
-            if let Fruit::Apple = self {
-                "an apple".to_owned()
-            } else {
-                "a banana".to_owned()
+            match self {
+                Fruit::Apple => "an apple".to_owned(),
+                Fruit::Banana => "a banana".to_owned(),
+                Fruit::Kiwi => "a kiwi".to_owned(),
             }
         }
     }
@@ -30,8 +30,8 @@ mod model {
     }
 
     pub struct Hands {
-        left: Item,
-        right: Item,
+        left: Item<Fruit>,
+        right: Item<Fruit>,
     }
 
     impl Hands {
