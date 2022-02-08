@@ -4,12 +4,17 @@ mod model {
         Nothing,
     }
 
+    pub trait Displayable {
+        fn display(&self) -> String;
+    }
+
     enum Fruit {
         Apple,
         Banana,
+        Kiwi,
     }
 
-    impl Fruit {
+    impl Displayable for Fruit {
         fn display(&self) -> String {
             match self {
                 Fruit::Apple => "an apple".to_owned(),
@@ -19,12 +24,15 @@ mod model {
         }
     }
 
-    impl Item {
-        pub fn show_item(self: &Item, which: &str) {
-            if let Item::Something(what) = self {
-                println!("{} hand is holding: {}", which, what.display());
-            } else {
-                println!("{} hand is holding nothing", which);
+    impl<T: Displayable> Item<T> {
+        pub fn show_item(&self, which: &str) {
+            match self {
+                Item::Something(fruit) => {
+                    println!("{} hand is holding {}", which, fruit.display())
+                }
+                _ => {
+                    println!("{} hand is not holding anything", which)
+                }
             }
         }
     }
