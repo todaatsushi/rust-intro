@@ -1,9 +1,4 @@
 mod model {
-    pub enum Item<T> {
-        Something(T),
-        Nothing,
-    }
-
     pub trait Displayable {
         fn display(&self) -> String;
     }
@@ -24,22 +19,22 @@ mod model {
         }
     }
 
-    impl<T: Displayable> Item<T> {
-        pub fn show_item(&self, which: &str) {
-            match self {
-                Item::Something(fruit) => {
-                    println!("{} hand is holding {}", which, fruit.display())
-                }
-                _ => {
-                    println!("{} hand is not holding anything", which)
-                }
+    // impl<T: Displayable> Option<T> {
+    pub fn show_item<T: Displayable>(item: &Option<T>, which: &str) {
+        match item {
+            Some(what) => {
+                println!("{} hand is holding {}", which, what.display())
+            }
+            _ => {
+                println!("{} hand is not holding anything", which)
             }
         }
     }
+    // }
 
     pub struct Hands {
-        left: Item<Fruit>,
-        right: Item<Fruit>,
+        left: Option<Fruit>,
+        right: Option<Fruit>,
     }
 
     impl Hands {
@@ -51,13 +46,13 @@ mod model {
             //     println!("Left hand is holding nothing");
             // }
 
-            Item::show_item(&self.left, "Left"); // nested borrow here works
-            Item::show_item(&self.right, "Right");
+            show_item(&self.left, "Left"); // nested borrow here works
+            show_item(&self.right, "Right");
         }
         pub fn juggle(mut self) -> Self {
             println!("Let's juggle");
 
-            let air: Item = self.left;
+            let air = self.left;
             self.left = self.right;
             self.right = air;
             self
@@ -65,11 +60,11 @@ mod model {
 
         pub fn new() -> Self {
             Self {
-                left: Item::Something(
+                left: Some(
                     // what: "an apple", doesn't work as "an apple" is borrowed
                     Fruit::Apple,
                 ),
-                right: Item::Something(Fruit::Banana),
+                right: Some(Fruit::Banana),
             }
         }
     }
