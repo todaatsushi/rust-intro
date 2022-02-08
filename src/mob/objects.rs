@@ -20,27 +20,27 @@ mod model {
     }
 
     impl Hands {
-        pub fn show_hands(hands: &Self) {
+        pub fn show_hands(&self) {
             // We can borrow hands instead preventing the moving of the var
-            if hands.left.present {
-                println!("Left hand is holding: {}", hands.left.what);
+            if self.left.present {
+                println!("Left hand is holding: {}", self.left.what);
             } else {
                 println!("Left hand is holding nothing");
             }
 
-            Item::show_item(&hands.right, "Right") // nested borrow here works
+            Item::show_item(&self.right, "Right") // nested borrow here works
         }
-        pub fn juggle(mut hands: Self) -> Self {
+        pub fn juggle(mut self) -> Self {
             println!("Let's juggle");
 
-            let air: Item = hands.left;
-            hands.left = hands.right;
-            hands.right = air;
-            hands
+            let air: Item = self.left;
+            self.left = self.right;
+            self.right = air;
+            self
         }
 
         pub fn new() -> Self {
-            Hands {
+            Self {
                 left: Item {
                     // what: "an apple", doesn't work as "an apple" is borrowed
                     what: "an apple".to_owned(),
@@ -70,8 +70,9 @@ pub fn about_ownership() {
 
     let mut hands: Hands = Hands::new();
 
-    Hands::show_hands(&hands);
+    hands.show_hands();
     println!("By not declaring a copying function, moving the var hands into the func will prevent it from being used");
     println!("We can manipulate the var by borrowing instead");
-    hands = Hands::juggle(hands);
+    hands = hands.juggle();
+    hands.show_hands();
 }
