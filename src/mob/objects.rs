@@ -1,13 +1,28 @@
 mod model {
-    pub struct Item {
-        what: String,
-        present: bool,
+    pub enum Item {
+        Something(Fruit),
+        Nothing,
+    }
+
+    enum Fruit {
+        Apple,
+        Banana,
+    }
+
+    impl Fruit {
+        fn display(&self) -> String {
+            if let Fruit::Apple = self {
+                "an apple".to_owned()
+            } else {
+                "a banana".to_owned()
+            }
+        }
     }
 
     impl Item {
-        pub fn show_item(item: &Item, which: &str) {
-            if item.present {
-                println!("{} hand is holding: {}", which, item.what);
+        pub fn show_item(self: &Item, which: &str) {
+            if let Item::Something(what) = self {
+                println!("{} hand is holding: {}", which, what.display());
             } else {
                 println!("{} hand is holding nothing", which);
             }
@@ -22,13 +37,14 @@ mod model {
     impl Hands {
         pub fn show_hands(&self) {
             // We can borrow hands instead preventing the moving of the var
-            if self.left.present {
-                println!("Left hand is holding: {}", self.left.what);
-            } else {
-                println!("Left hand is holding nothing");
-            }
+            // if self.left.present {
+            //     println!("Left hand is holding: {}", self.left.what);
+            // } else {
+            //     println!("Left hand is holding nothing");
+            // }
 
-            Item::show_item(&self.right, "Right") // nested borrow here works
+            Item::show_item(&self.left, "Left"); // nested borrow here works
+            Item::show_item(&self.right, "Right");
         }
         pub fn juggle(mut self) -> Self {
             println!("Let's juggle");
@@ -41,15 +57,11 @@ mod model {
 
         pub fn new() -> Self {
             Self {
-                left: Item {
+                left: Item::Something(
                     // what: "an apple", doesn't work as "an apple" is borrowed
-                    what: "an apple".to_owned(),
-                    present: true,
-                },
-                right: Item {
-                    what: "a banana".to_owned(),
-                    present: true,
-                },
+                    Fruit::Apple,
+                ),
+                right: Item::Something(Fruit::Banana),
             }
         }
     }
