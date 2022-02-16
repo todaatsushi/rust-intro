@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 pub fn about_vecs() {
     println!("First, about vectors which stores lists of things");
     let mut primes: Vec<i32> = Vec::new();
@@ -42,4 +44,11 @@ pub fn about_vecs() {
     for (index, num) in primes.iter().enumerate() {
         println!("Num at index {} is {}", index, num);
     }
+
+    println!("\nVec that is more efficient to change just the ends of the vec is a vec dequeue.");
+    let mut primes_dequeue = VecDeque::new();
+    primes_dequeue.push_front(2);
+    primes_dequeue.push_back(3);
+    primes_dequeue.push_front(1);
+    println!("{:?}", primes_dequeue);
 }
