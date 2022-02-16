@@ -1,3 +1,4 @@
+mod collections_rs;
 mod control_flow;
 mod data;
 mod functions;
@@ -14,4 +15,6 @@ fn main() {
     control_flow::demo_fib();
 
     mob::talk_about_mob();
+
+    collections_rs::talk_about_collections();
 }
